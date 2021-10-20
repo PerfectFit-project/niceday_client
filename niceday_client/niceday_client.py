@@ -1,7 +1,24 @@
-import requests
 import typing
+from dataclasses import dataclass
+
+import requests
 
 from .definitions import USER_PROFILE_KEYS
+
+
+@dataclass
+class TrackerStatus:
+    """
+    Status of a user tracker.
+
+    Attributes:
+        trackerId: ID of the the tracker (see
+            https://github.com/senseobservationsystems/goalie-js/issues/840
+            on how to get tracker IDs, for example: cigarette counter has id=1)
+        isEnabled: Whether the tracker should be enabled
+    """
+    trackerId: int
+    isEnabled: bool
 
 
 class NicedayClient:
@@ -120,5 +137,24 @@ class NicedayClient:
         body = {
             "recipient_id": recipient_id,
             "text": text
+        }
+        return self._call_api('POST', url, body=body)
+
+    def set_user_tracker_statuses(self, user_id: int, tracker_statuses: typing.List[TrackerStatus]):
+        """
+        Set tracker statuses for a specific user.
+
+        Example Usage:
+            ```
+            self.set_user_tracker_statuses(12345, [TrackerStatus(trackerId=1, isEnabled=True)])
+
+        Args:
+            user_id: ID of the user we want to set tracker statuses for
+            tracker_statuses: List of TrackerStatus objects.
+        """
+        url = self._niceday_api_uri + 'usertrackers/statuses'
+        body = {
+            "userId": user_id,
+            "trackerStatuses": [ts.__dict__ for ts in tracker_statuses]
         }
         return self._call_api('POST', url, body=body)
