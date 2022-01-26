@@ -16,7 +16,7 @@ class TrackerStatus:
             https://github.com/senseobservationsystems/goalie-js/issues/840
             on how to get tracker IDs, for example: cigarette counter has id=1).
             Use the Tracker enum defined in definitions.py instead of hardcoding
-            integer values. e.g. 'Tracker.smoking' may be used instead of 1.
+            integer values. e.g. 'Tracker.SMOKING' may be used instead of 1.
         isEnabled: Whether the tracker should be enabled
     """
     trackerId: int
@@ -148,7 +148,7 @@ class NicedayClient:
 
         Example Usage:
             ```
-            self.set_user_tracker_statuses(12345, [TrackerStatus(trackerId=Tracker.smoking, isEnabled=True)])
+            self.set_user_tracker_statuses(12345, [TrackerStatus(trackerId=Tracker.SMOKING, isEnabled=True)])
 
         Args:
             user_id: ID of the user we want to set tracker statuses for
