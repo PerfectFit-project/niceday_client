@@ -1,3 +1,4 @@
+import datetime
 from unittest import mock
 
 import pytest
@@ -57,3 +58,15 @@ def test_set_user_tracker_statuses():
     client.set_user_tracker_statuses(
         user_id=existing_user_id,
         tracker_statuses=[TrackerStatus(trackerId=Tracker.smoking, isEnabled=True)])
+
+
+@pytest.mark.integration
+def test_get_smoking_tracker():
+    client = NicedayClient()
+    existing_user_id = 38527  # Please change this to your own test user id if used frequently
+    client.get_smoking_tracker(
+        user_id=existing_user_id,
+        start_time=datetime.datetime(2021, 10, 1, 1, 1, 1),
+        end_time=datetime.datetime(2022, 2, 10, 1, 1, 1)
+    )
+
