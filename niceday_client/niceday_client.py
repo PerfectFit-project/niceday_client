@@ -1,5 +1,6 @@
 import typing
 from dataclasses import dataclass
+import datetime
 
 import requests
 
@@ -160,3 +161,25 @@ class NicedayClient:
             "trackerStatuses": [ts.__dict__ for ts in tracker_statuses]
         }
         return self._call_api('POST', url, body=body)
+
+    def get_smoking_tracker(self, user_id: int, start_time: datetime.datetime,
+                            end_time: datetime.datetime):
+        """
+        Get smoking tracker data for specific user
+
+        Args:
+            user_id: ID of the user we want to set tracker statuses for
+            start_time: The start of the time range for which to get data
+            end_time: The end of the time range for which to get data
+
+        Returns:
+            A list of smoking tracker entries, each entry is a dict containing
+            amongst others the startTime & endTime, value (which is itself a dict
+            containing the key 'quantity' that depicts the number of cigarettes smoked
+            in an entry).
+
+        """
+        url = self._niceday_api_uri + 'usertrackers/smoking/' + str(user_id)
+        query_params = {'startTime': start_time.isoformat() + 'Z',
+                        'endTime': end_time.isoformat() + 'Z'}
+        return self._call_api('GET', url, query_params=query_params)
