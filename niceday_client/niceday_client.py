@@ -30,7 +30,7 @@ class NicedayClient:
     stack.
     """
 
-    def __init__(self, niceday_api_uri='http://localhost:8080/'):
+    def __init__(self, niceday_api_uri='http://niceday_api:8080/'):
         """
         Construct a client for interacting with the given niceday API URI.
         By default, this is assumed to be on http://localhost:8080/, but
