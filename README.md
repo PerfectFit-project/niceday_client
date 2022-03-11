@@ -10,4 +10,4 @@ git+https://github.com/PerfectFit-project/niceday_client#v0.1.0
 ```
 
 # New versions release
-When a new version of the niceday_client package is ready and tested, a [new relase has to be created together with release notes] (https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository). The release name has to follow the semantic versioning convention.
+When a new version of the niceday_client package is ready and tested, a [new relase has to be created together with release notes](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository). The release name has to follow the semantic versioning convention.
