@@ -1,7 +1,7 @@
 import typing
 from dataclasses import dataclass
 import datetime
-
+import json
 import requests
 
 from .definitions import USER_PROFILE_KEYS
@@ -182,4 +182,7 @@ class NicedayClient:
         url = self._niceday_api_uri + 'usertrackers/smoking/' + str(user_id)
         query_params = {'startTime': start_time.isoformat() + 'Z',
                         'endTime': end_time.isoformat() + 'Z'}
-        return self._call_api('GET', url, query_params=query_params)
+        query_response = self._call_api('GET', url, query_params=query_params)
+        # convert the json response into a list of dict
+        response_json = json.loads(query_response.content)
+        return response_json
