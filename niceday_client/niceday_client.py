@@ -214,7 +214,7 @@ class NicedayClient:
 
         recurring_schedule = {
             "title": reminder_title,
-            "tracker_id": tracker_name,
+            "schedule_type": tracker_name,
             "recurring_expression": {
                 "margin": {
                     "before": 0,
