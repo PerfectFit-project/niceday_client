@@ -194,7 +194,11 @@ class NicedayClient:
 
         Example Usage:
             ```
-            client.set_tracker_reminder(12345, TrackerName.SMOKING.value, "This is a tracker", rrule(DAILY,dtstart=datetime.datetime(2022, 5, 12, 0, 0),until=datetime.datetime(2022, 5, 13, 0, 0)))
+            client.set_tracker_reminder(12345,
+                                        TrackerName.SMOKING.value,
+                                        "This is a tracker",
+                                        rrule(DAILY,dtstart=datetime.datetime(2022, 5, 12, 0, 0),
+                                        until=datetime.datetime(2022, 5, 13, 0, 0)))
 
         Args:
             user_id: ID of the user we want to set tracker statuses for
@@ -210,7 +214,7 @@ class NicedayClient:
 
         recurring_schedule = {
             "title": reminder_title,
-            "schedule_type": tracker_name,
+            "tracker_id": tracker_name,
             "recurring_expression": {
                 "margin": {
                     "before": 0,
