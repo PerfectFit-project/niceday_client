@@ -1,6 +1,7 @@
 import typing
 from dataclasses import dataclass
 import datetime
+from dateutil.rrule import rrule
 import json
 import requests
 
@@ -17,7 +18,7 @@ class TrackerStatus:
             https://github.com/senseobservationsystems/goalie-js/issues/840
             on how to get tracker IDs, for example: cigarette counter has id=1).
             Use the Tracker enum defined in definitions.py instead of hardcoding
-            integer values. e.g. 'Tracker.SMOKING' may be used instead of 1.
+            integer values. e.g. 'Tracker.SMOKING.value[0]' may be used instead of 1.
         isEnabled: Whether the tracker should be enabled
     """
     trackerId: int
@@ -149,7 +150,7 @@ class NicedayClient:
 
         Example Usage:
             ```
-            self.set_user_tracker_statuses(12345, [TrackerStatus(trackerId=Tracker.SMOKING, isEnabled=True)])
+            self.set_user_tracker_statuses(12345, [TrackerStatus(trackerId=Tracker.SMOKING.value[0], isEnabled=True)])
 
         Args:
             user_id: ID of the user we want to set tracker statuses for
@@ -186,3 +187,51 @@ class NicedayClient:
         # convert the json response into a list of dict
         response_json = json.loads(query_response.content)
         return response_json
+
+    def set_tracker_reminder(self, user_id: int, tracker_name: str, reminder_title: str, recurrence_rule: rrule):
+        """
+        Set tracker reminder for a specific user.
+
+        Example Usage:
+            ```
+            client.set_tracker_reminder(12345,
+                                        Tracker.SMOKING.value[1],
+                                        "This is a tracker",
+                                        rrule(DAILY,dtstart=datetime.datetime(2022, 5, 12, 0, 0),
+                                        until=datetime.datetime(2022, 5, 13, 0, 0)))
+
+        Args:
+            user_id: ID of the user we want to set tracker statuses for
+            tracker_name: Name of the tracker to set the reminder for (see
+                https://github.com/senseobservationsystems/goalie-js/issues/840
+                on how to get tracker name, for example: smoking tracker has name=tracker_smoking).
+                Use the Tracker enum defined in definitions.py instead of hardcoding
+                string values. e.g. 'Tracker.SMOKING.value[1]' may be used instead of 'tracker_smoking'.
+            reminder_title: title of the reminder. This is displayed in the app
+            recurrence_rule: rule for recursion setting. Use the rrule module to create the rule.
+        """
+        url = self._niceday_api_uri + 'usertrackers/reminder'
+
+        recurring_schedule = {
+            "title": reminder_title,
+            "schedule_type": tracker_name,
+            "recurring_expression": {
+                "margin": {
+                    "before": 0,
+                    "after": 60
+                },
+                "reminder_enabled": True,
+                "reminder_margin": [
+                    {
+                        "before": 0,
+                        "after": 60
+                    }
+                ],
+                "rrule": str(recurrence_rule)
+            }
+        }
+        body = {
+            "userId": str(user_id),
+            "recurringSchedule": recurring_schedule
+        }
+        return self._call_api('POST', url, body=body)
