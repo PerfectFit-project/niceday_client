@@ -57,7 +57,7 @@ def test_set_user_tracker_statuses():
     existing_user_id = 38527  # Please change this to your own test user id if used frequently
     client.set_user_tracker_statuses(
         user_id=existing_user_id,
-        tracker_statuses=[TrackerStatus(trackerId=Tracker.SMOKING, isEnabled=True)])
+        tracker_statuses=[TrackerStatus(trackerId=Tracker.SMOKING.value[0], isEnabled=True)])
 
 
 @pytest.mark.integration

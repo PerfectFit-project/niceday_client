@@ -1,9 +1,7 @@
-from enum import IntEnum, Enum
+from enum import Enum
 
 USER_PROFILE_KEYS = ['firstName', 'lastName', 'location', 'birthDate', 'gender']
 
-class Tracker(IntEnum):
-    SMOKING = 1
 
-class TrackerName(Enum):
-    SMOKING = 'tracker_smoking'
+class Tracker(Enum):
+    SMOKING = (1, 'tracker_smoking')

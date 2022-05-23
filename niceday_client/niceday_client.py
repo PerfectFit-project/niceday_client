@@ -18,7 +18,7 @@ class TrackerStatus:
             https://github.com/senseobservationsystems/goalie-js/issues/840
             on how to get tracker IDs, for example: cigarette counter has id=1).
             Use the Tracker enum defined in definitions.py instead of hardcoding
-            integer values. e.g. 'Tracker.SMOKING' may be used instead of 1.
+            integer values. e.g. 'Tracker.SMOKING.value[0]' may be used instead of 1.
         isEnabled: Whether the tracker should be enabled
     """
     trackerId: int
@@ -150,7 +150,7 @@ class NicedayClient:
 
         Example Usage:
             ```
-            self.set_user_tracker_statuses(12345, [TrackerStatus(trackerId=Tracker.SMOKING, isEnabled=True)])
+            self.set_user_tracker_statuses(12345, [TrackerStatus(trackerId=Tracker.SMOKING.value[0], isEnabled=True)])
 
         Args:
             user_id: ID of the user we want to set tracker statuses for
@@ -195,7 +195,7 @@ class NicedayClient:
         Example Usage:
             ```
             client.set_tracker_reminder(12345,
-                                        TrackerName.SMOKING.value,
+                                        Tracker.SMOKING.value[1],
                                         "This is a tracker",
                                         rrule(DAILY,dtstart=datetime.datetime(2022, 5, 12, 0, 0),
                                         until=datetime.datetime(2022, 5, 13, 0, 0)))
@@ -205,8 +205,8 @@ class NicedayClient:
             tracker_name: Name of the tracker to set the reminder for (see
                 https://github.com/senseobservationsystems/goalie-js/issues/840
                 on how to get tracker name, for example: smoking tracker has name=tracker_smoking).
-                Use the TrackerName enum defined in definitions.py instead of hardcoding
-                string values. e.g. 'TrackerName.SMOKING' may be used instead of 'tracker_smoking'.
+                Use the Tracker enum defined in definitions.py instead of hardcoding
+                string values. e.g. 'Tracker.SMOKING.value[1]' may be used instead of 'tracker_smoking'.
             reminder_title: title of the reminder. This is displayed in the app
             recurrence_rule: rule for recursion setting. Use the rrule module to create the rule.
         """
