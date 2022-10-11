@@ -63,7 +63,7 @@ class NicedayClient:
         if method == 'GET':
             r = requests.get(url, params=query_params, headers=headers)
         elif method == 'POST':
-            r = requests.post(url, params=query_params, headers=headers, json=body, files=files)
+            r = requests.post(url, params=query_params, headers=headers, data=body, files=files)
         else:
             raise NotImplementedError('Other methods are not implemented yet')
         r.raise_for_status()
