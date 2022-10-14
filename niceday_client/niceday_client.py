@@ -45,7 +45,7 @@ class NicedayClient:
                   url: str,
                   query_params: typing.Optional[dict] = None,
                   body: typing.Optional[dict] = None,
-                  files: typing.Optional[dict] = None) -> requests.Response:
+                  files: typing.List[typing.Tuple[str, typing.Tuple[str, typing.Any, str]]] = None) -> requests.Response:
         """
         Handles http requests with the niceday-api.
 
