@@ -237,13 +237,12 @@ class NicedayClient:
         }
         return self._call_api('POST', url, body=body)
 
-    def upload_file(self, user_id: int, filename: str, filepath: str, file):
+    def upload_file(self, user_id: int, filepath: str, file):
         """
         Get smoking tracker data for specific user
 
         Args:
             user_id: ID of the user we want to set tracker statuses for
-            filename: The name of the file to be uploaded
             filepath: The local path of the file to be uploaded
             file: file stream created
 
@@ -252,6 +251,8 @@ class NicedayClient:
 
         """
         url = self._niceday_api_uri + 'files'
+
+        filename = filepath.split('/')[-1]
         files = [('file', (filename, file, 'application/octet-stream'))]
 
         body = {
