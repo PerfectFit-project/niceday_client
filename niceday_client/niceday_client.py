@@ -44,7 +44,8 @@ class NicedayClient:
                   method: str,
                   url: str,
                   query_params: typing.Optional[dict] = None,
-                  body: typing.Optional[dict] = None) -> requests.Response:
+                  body: typing.Optional[dict] = None,
+                  files: typing.List[typing.Tuple[str, typing.Tuple[str, typing.Any, str]]] = None) -> requests.Response:
         """
         Handles http requests with the niceday-api.
 
@@ -62,7 +63,7 @@ class NicedayClient:
         if method == 'GET':
             r = requests.get(url, params=query_params, headers=headers)
         elif method == 'POST':
-            r = requests.post(url, params=query_params, headers=headers, json=body)
+            r = requests.post(url, params=query_params, headers=headers, data=body, files=files)
         else:
             raise NotImplementedError('Other methods are not implemented yet')
         r.raise_for_status()
@@ -235,3 +236,32 @@ class NicedayClient:
             "recurringSchedule": recurring_schedule
         }
         return self._call_api('POST', url, body=body)
+
+    def upload_file(self, user_id: int, filepath: str, file):
+        """
+        Get smoking tracker data for specific user
+
+        Args:
+            user_id: ID of the user we want to set tracker statuses for
+            filepath: The local path of the file to be uploaded
+            file: file stream created
+
+        Returns:
+            The answer of the NiceDay server.
+
+        """
+        url = self._niceday_api_uri + 'files'
+
+        filename = filepath.split('/')[-1]
+        files = [('file', (filename, file, 'application/octet-stream'))]
+
+        body = {
+              'receiver_id': str(user_id),
+              'file_path': filepath
+        }
+
+        query_response = self._call_api('POST', url, body=body, files=files)
+        # convert the json response into a list of dict
+        response_json = json.loads(query_response.content)
+
+        return response_json
