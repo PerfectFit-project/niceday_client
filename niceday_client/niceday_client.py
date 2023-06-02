@@ -268,3 +268,29 @@ class NicedayClient:
         response_json = json.loads(query_response.content)
 
         return response_json
+
+    def get_invitation_requests(self):
+        """
+        Get the list of pending connection invitations of a therapist
+
+        """
+        url = self._niceday_api_uri + 'connectionrequests'
+        query_response = self._call_api('GET', url)
+        # convert the json response into a list of dict
+        response_json = json.loads(query_response.content)
+        return response_json
+
+    def accept_invitation_request(self, invitation_id: str):
+        """
+        Accept a connection request
+        Args:
+            invitation_id: ID of the request to be accepted
+
+        """
+        url = self._niceday_api_uri + 'acceptconnection'
+
+        body = {
+            'invitation_id': invitation_id,
+        }
+        return self._call_api('POST', url, body=body)
+    
