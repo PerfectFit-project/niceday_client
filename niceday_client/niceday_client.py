@@ -293,4 +293,18 @@ class NicedayClient:
             'invitation_id': invitation_id,
         }
         return self._call_api('POST', url, body=body)
+
+    def remove_contact(self, user_id: str):
+        """
+        Remove user contact from therapist
+        Args:
+            user_id: ID of the user to be removed
+
+        """
+        url = self._niceday_api_uri + 'removecontact'
+
+        body = {
+            'user_id': user_id,
+        }
+        return self._call_api('POST', url, body=body)
     
